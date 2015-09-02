@@ -22,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Intl\Intl;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Controller used to manage blog contents in the public part of the site.
@@ -113,5 +114,21 @@ class BlogController extends Controller
             'post' => $post,
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * @Route("/search/{query}", name="blog_search")
+     * @Method("GET")
+     *
+     * @return JsonResponse
+     */
+    public function searchAction($query)
+    {
+        /** @var \AppBundle\Blog\PostSearcher $searcher */
+        $searcher = $this->get('post_searcher');
+
+        $results = $searcher->search($query);
+
+        return new JsonResponse($results);
     }
 }
