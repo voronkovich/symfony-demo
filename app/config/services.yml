@@ -7,6 +7,12 @@ services:
     markdown:
         class: AppBundle\Utils\Markdown
 
+    post_searcher:
+        class: AppBundle\Blog\PostSearcher
+        arguments:
+            - "@=service('doctrine.orm.entity_manager').getRepository('AppBundle:Post')"
+            - "@router"
+
     # These are the Twig extensions that create new filters and functions for
     # using them in the templates
     app.twig.app_extension:
