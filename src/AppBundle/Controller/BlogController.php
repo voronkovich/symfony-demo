@@ -150,7 +150,6 @@ class BlogController extends Controller
         }
 
         return $this->render('blog/search.html.twig', array(
-            'query' => $query,
             'posts' => $posts,
             'terms' => $terms,
         ));
