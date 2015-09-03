@@ -203,10 +203,6 @@
                 <source>post.go_to_search_page</source>
                 <target>Перейти на страницу поиска</target>
             </trans-unit>
-            <trans-unit id="post.search">
-                <source>post.search</source>
-                <target>Искать</target>
-            </trans-unit>
             <trans-unit id="post.search_for">
                 <source>post.search_for</source>
                 <target>Искать запись...</target>

@@ -203,10 +203,6 @@
                 <source>post.go_to_search_page</source>
                 <target>Go to search page</target>
             </trans-unit>
-            <trans-unit id="post.search">
-                <source>post.search</source>
-                <target>Search</target>
-            </trans-unit>
             <trans-unit id="post.search_for">
                 <source>post.search_for</source>
                 <target>Search for...</target>
