@@ -42,6 +42,12 @@ services:
         tags:
             - { name: twig.extension }
 
+    app.twig.search_extension:
+        public:    false
+        class:     AppBundle\Twig\SearchExtension
+        tags:
+            - { name: twig.extension }
+
     app.controller_listener:
         class:     AppBundle\EventListener\ControllerListener
         arguments: ["@app.twig.source_code_extension"]
