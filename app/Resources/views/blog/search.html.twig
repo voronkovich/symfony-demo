@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'blog_index' %}
+
+{% block main %}
+
+    <section class="search">
+        <form action="{{ path('blog_search') }}" method="get">
+            <div class="input-group">
+                <input name="q" value="{{ query }}" type="text" class="form-control" placeholder="{{ 'post.search_for'|trans }}">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">{{ 'post.search'|trans }}</button>
+                </span>
+            </div>
+        </form>
+    </section>
+
+    {% for post in posts %}
+        <article class="post">
+            <h2>
+                <a href="{{ path('blog_post', { slug: post.slug }) }}">
+                    {{ post.title|e|emphasize_terms(terms)|raw }}
+                </a>
+            </h2>
+
+            {{ post.summary|md2html }}
+        </article>
+    {% else %}
+        <div class="well">{{ 'post.no_posts_found'|trans }}</div>
+    {% endfor %}
+{% endblock %}
+
+{% block sidebar %}
+    {{ parent() }}
+
+    {{ show_source_code(_self) }}
+{% endblock %}
