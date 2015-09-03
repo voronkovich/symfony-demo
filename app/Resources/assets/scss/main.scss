@@ -258,6 +258,21 @@ body#blog_post_show {
 }
 
 //
+// Page: 'blog_search'
+// --------------------------------------------------
+body#blog_search {
+    section.search-form {
+        margin-bottom: 1em;
+    }
+
+    section.search-results .post a em {
+        font-weight: bold;
+        font-style: normal;
+        color: #006699;
+    }
+}
+
+//
 // Page: 'comment_form_error'
 // --------------------------------------------------
 body#comment_form_error {

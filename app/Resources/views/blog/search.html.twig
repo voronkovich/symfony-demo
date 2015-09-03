@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block body_id 'blog_index' %}
+{% block body_id 'blog_search' %}
 
 {% block main %}
 
-    <section class="search">
+    <section class="search-form">
         <form action="{{ path('blog_search') }}" method="get">
             <div class="input-group">
                 <input name="q" value="{{ terms|join(' ') }}" type="text" class="form-control" placeholder="{{ 'post.search_for'|trans }}">
@@ -15,21 +15,23 @@
         </form>
     </section>
 
-    {% for post in posts %}
-        <article class="post">
-            <h2>
-                <a href="{{ path('blog_post', { slug: post.slug }) }}">
-                    {{ post.title|e|emphasize_terms(terms)|raw }}
-                </a>
-            </h2>
+    <section class="search-results">
+        {% for post in posts %}
+            <article class="post">
+                <h2>
+                    <a href="{{ path('blog_post', { slug: post.slug }) }}">
+                        {{ post.title|e|emphasize_terms(terms)|raw }}
+                    </a>
+                </h2>
 
-            {{ post.summary|md2html }}
-        </article>
-    {% else %}
-        {% if terms is not empty %}
-            <div class="well">{{ 'post.no_posts_found'|trans }}</div>
-        {% endif %}
-    {% endfor %}
+                {{ post.summary|md2html }}
+            </article>
+        {% else %}
+            {% if terms is not empty %}
+                <div class="well">{{ 'post.no_posts_found'|trans }}</div>
+            {% endif %}
+        {% endfor %}
+    </section>
 {% endblock %}
 
 {% block sidebar %}
