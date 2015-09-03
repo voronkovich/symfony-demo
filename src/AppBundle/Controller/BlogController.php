@@ -14,6 +14,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Comment;
 use AppBundle\Entity\Post;
 use AppBundle\Form\CommentType;
+use AppBundle\Utils\SearchHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -21,8 +22,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Intl\Intl;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Intl\Intl;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Controller used to manage blog contents in the public part of the site.
@@ -117,18 +119,40 @@ class BlogController extends Controller
     }
 
     /**
-     * @Route("/search/{query}", name="blog_search")
+     * @Route("/search", name="blog_search")
      * @Method("GET")
      *
-     * @return JsonResponse
+     * @return Response|JsonResponse
      */
-    public function searchAction($query)
+    public function searchAction(Request $request)
     {
-        /** @var \AppBundle\Blog\PostSearcher $searcher */
-        $searcher = $this->get('post_searcher');
+        $query = $request->query->get('q');
 
-        $results = $searcher->search($query);
+        $terms = SearchHelper::splitIntoTerms($query, 2);
+        $posts = new ArrayCollection();
 
-        return new JsonResponse($results);
+        if (!empty($terms)) {
+            $em = $this->getDoctrine()->getManager();
+            $posts = $em->getRepository('AppBundle:Post')->findByTerms($terms);
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            $results = array();
+
+            foreach ($posts as $post) {
+                array_push($results, array(
+                    'result' => SearchHelper::emphasizeTerms($post->getTitle(), $terms, 'em'),
+                    'url' => $postUrl = $this->generateUrl('blog_post', array('slug' => $post->getSlug())),
+                ));
+            }
+
+            return new JsonResponse($results);
+        }
+
+        return $this->render('blog/search.html.twig', array(
+            'query' => $query,
+            'posts' => $posts,
+            'terms' => $terms,
+        ));
     }
 }
