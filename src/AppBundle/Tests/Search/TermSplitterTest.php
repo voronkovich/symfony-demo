@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Tests\Utils;
+namespace Tests\Search;
 
 use AppBundle\Search\TermSplitter;
 
@@ -32,6 +32,7 @@ class TermSplitterTest extends \PHPUnit_Framework_TestCase
     {
         $termSplitter = new TermSplitter();
         $termSplitter->setMinTermLength(3);
+
         $result = $termSplitter->splitIntoTerms($string);
 
         $this->assertEquals($terms, $result);
