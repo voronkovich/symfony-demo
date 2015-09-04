@@ -261,11 +261,27 @@ body#blog_post_show {
 // Page: 'blog_search'
 // --------------------------------------------------
 body#blog_search {
-    section.search-form {
+    .search-form {
         margin-bottom: 1em;
     }
 
-    section.search-results .post a em {
+    .search-form form {
+        position: relative;
+    }
+
+    .search-preview {
+        position: absolute;
+        width: 100%;
+        top: 100%;
+    }
+
+    .search-preview em {
+        font-weight: bold;
+        font-style: normal;
+        color: #066699;
+    }
+
+    .search-results .post a em {
         font-weight: bold;
         font-style: normal;
         color: #006699;
