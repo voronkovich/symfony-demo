@@ -34,7 +34,7 @@ class TermSplitter
      */
     public function splitIntoTerms($str)
     {
-        $terms = array_unique(explode(' ', $this->sanitize($str)));
+        $terms = array_unique(explode(' ', strtolower($this->sanitize($str))));
 
         return $this->removeShortTerms($terms);
     }
