@@ -14,7 +14,6 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Comment;
 use AppBundle\Entity\Post;
 use AppBundle\Form\CommentType;
-use AppBundle\Utils\SearchHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -128,12 +127,13 @@ class BlogController extends Controller
     {
         $query = $request->query->get('q');
 
-        $emphasizeConfig = array(
-            'tmpl' => '<em>%s</em>',
-            'flags' => 'i',
-        );
+        /** @var \AppBundle\Search\TermSplitter $termSplitter */
+        $termSplitter = $this->get('search.term_splitter');
 
-        $terms = SearchHelper::splitIntoTerms($query, 2);
+        /** @var \AppBundle\Search\TermEmphasizer $termEmphasizer */
+        $termEmphasizer = $this->get('search.term_emphasizer');
+
+        $terms = $termSplitter->splitIntoTerms($query);
         $posts = new ArrayCollection();
 
         if (!empty($terms)) {
@@ -146,8 +146,8 @@ class BlogController extends Controller
 
             foreach ($posts as $post) {
                 array_push($results, array(
-                    'result' => SearchHelper::emphasizeTerms($post->getTitle(), $terms, $emphasizeConfig),
-                    'url' => $postUrl = $this->generateUrl('blog_post', array('slug' => $post->getSlug())),
+                    'result' => $termEmphasizer->emphasizeTerms($post->getTitle(), $terms),
+                    'url' => $this->generateUrl('blog_post', array('slug' => $post->getSlug())),
                 ));
             }
 
@@ -157,7 +157,7 @@ class BlogController extends Controller
         return $this->render('blog/search.html.twig', array(
             'posts' => $posts,
             'terms' => $terms,
-            'emphasize_config' => $emphasizeConfig,
+            'emphasizer' => $termEmphasizer,
         ));
     }
 }

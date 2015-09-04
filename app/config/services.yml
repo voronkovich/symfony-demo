@@ -7,6 +7,12 @@ services:
     markdown:
         class: AppBundle\Utils\Markdown
 
+    search.term_splitter:
+        class: AppBundle\Search\TermSplitter
+
+    search.term_emphasizer:
+        class: AppBundle\Search\TermEmphasizer
+
     # These are the Twig extensions that create new filters and functions for
     # using them in the templates
     app.twig.app_extension:
@@ -33,12 +39,6 @@ services:
     app.twig.extension_intl:
         public: false
         class:  Twig_Extensions_Extension_Intl
-        tags:
-            - { name: twig.extension }
-
-    app.twig.search_extension:
-        public:    false
-        class:     AppBundle\Twig\SearchExtension
         tags:
             - { name: twig.extension }
 
