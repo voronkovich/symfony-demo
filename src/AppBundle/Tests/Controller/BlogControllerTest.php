@@ -37,4 +37,16 @@ class BlogControllerTest extends WebTestCase
             'The homepage displays the right number of posts.'
         );
     }
+
+    public function testSearch()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/en/blog/search');
+
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('.search-form')->count(),
+            'The search page displays the search form.'
+        );
+    }
 }
