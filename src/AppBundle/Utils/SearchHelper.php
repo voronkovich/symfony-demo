@@ -23,17 +23,22 @@ class SearchHelper
      *
      * @param string $text
      * @param array $terms
-     * @param string $tag
+     * @param array $config
      *
      * @return string with emphasized terms
      */
-    public static function emphasizeTerms($text, array $terms, $tag = 'em')
+    public static function emphasizeTerms($text, array $terms, array $config)
     {
-        $patterns = array_map(function($term) {
-            return sprintf('/%s/', $term);
+        $config = array_merge(array(
+            'tmpl' => '<em>%s</em>',
+            'flags' => '',
+        ), $config);
+
+        $patterns = array_map(function($term) use ($config) {
+            return sprintf('/%s/%s', $term, $config['flags']);
         }, $terms);
 
-        return preg_replace($patterns, "<$tag>\${0}</$tag>", $text);
+        return preg_replace($patterns, sprintf($config['tmpl'], '${0}'), $text);
     }
 
     /**

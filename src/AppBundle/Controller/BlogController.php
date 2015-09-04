@@ -128,6 +128,11 @@ class BlogController extends Controller
     {
         $query = $request->query->get('q');
 
+        $emphasizeConfig = array(
+            'tmpl' => '<em>%s</em>',
+            'flags' => 'i',
+        );
+
         $terms = SearchHelper::splitIntoTerms($query, 2);
         $posts = new ArrayCollection();
 
@@ -141,7 +146,7 @@ class BlogController extends Controller
 
             foreach ($posts as $post) {
                 array_push($results, array(
-                    'result' => SearchHelper::emphasizeTerms($post->getTitle(), $terms, 'em'),
+                    'result' => SearchHelper::emphasizeTerms($post->getTitle(), $terms, $emphasizeConfig),
                     'url' => $postUrl = $this->generateUrl('blog_post', array('slug' => $post->getSlug())),
                 ));
             }
@@ -152,6 +157,7 @@ class BlogController extends Controller
         return $this->render('blog/search.html.twig', array(
             'posts' => $posts,
             'terms' => $terms,
+            'emphasize_config' => $emphasizeConfig,
         ));
     }
 }
