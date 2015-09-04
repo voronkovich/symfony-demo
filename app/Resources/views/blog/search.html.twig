@@ -39,7 +39,9 @@
 
     <script>
         $(function() {
-            $('.search-form input[name="q"]').instantSearch();
+            $('.search-form input[name="q"]').instantSearch({
+                noItemsFoundMessage: '{{ 'post.no_posts_found'|trans }}'
+            });
         });
     </script>
 {% endblock javascripts %}
