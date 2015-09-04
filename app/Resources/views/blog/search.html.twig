@@ -7,7 +7,7 @@
     <section class="search-form">
         <form action="{{ path('blog_search') }}" method="get">
             <div class="input-group">
-                <input name="q" value="{{ terms|join(' ') }}" type="text" class="form-control" placeholder="{{ 'post.search_for'|trans }}">
+                <input name="q" value="{{ terms|join(' ') }}" type="text" class="form-control" placeholder="{{ 'post.search_for'|trans }}" autocomplete="off">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                 </span>
@@ -20,7 +20,7 @@
             <article class="post">
                 <h2>
                     <a href="{{ path('blog_post', { slug: post.slug }) }}">
-                        {{ post.title|e|emphasize_terms(terms)|raw }}
+                        {{ post.title|e|emphasize_terms(terms, emphasize_config)|raw }}
                     </a>
                 </h2>
 
@@ -33,6 +33,16 @@
         {% endfor %}
     </section>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(function() {
+            $('.search-form input[name="q"]').instantSearch();
+        });
+    </script>
+{% endblock javascripts %}
 
 {% block sidebar %}
     {{ parent() }}
