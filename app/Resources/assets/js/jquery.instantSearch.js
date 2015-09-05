@@ -1,4 +1,4 @@
-// jQuery plugin for instant searching
+// jQuery plugin for an instant searching
 (function($) {
     $.fn.instantSearch = function(config) {
         return this.each(function() {
@@ -13,7 +13,7 @@
         noItemsFoundMessage: 'No items found'
     };
 
-    var delay = (function(){
+    var throttle = (function(){
         var timer = 0;
         return function(callback, ms){
             clearTimeout (timer);
@@ -73,7 +73,7 @@
         });
 
         $input.keyup(function(e) {
-            delay(updatePreview, config.previewDelay);
+            throttle(updatePreview, config.previewDelay);
         });
     }
 })(window.jQuery)
