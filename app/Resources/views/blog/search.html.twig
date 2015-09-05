@@ -20,7 +20,7 @@
             <article class="post">
                 <h2>
                     <a href="{{ path('blog_post', { slug: post.slug }) }}">
-                        {{ emphasizer.emphasizeTerms(post.title|e, terms)|raw }}
+                        {{ post.title }}
                     </a>
                 </h2>
 

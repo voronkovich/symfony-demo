@@ -125,15 +125,18 @@ class BlogController extends Controller
      */
     public function searchAction(Request $request)
     {
-        $query = $request->query->get('q');
+        $q = $request->query->get('q');
 
-        /** @var \AppBundle\Search\TermSplitter $termSplitter */
-        $termSplitter = $this->get('search.term_splitter');
+        // Sanitizing the query: removes all non-alphabetic symbols
+        $query = preg_replace('/[^[:alnum:] ]/', '', trim(preg_replace('/[[:space:]]+/', ' ', $q)));
 
-        /** @var \AppBundle\Search\TermEmphasizer $termEmphasizer */
-        $termEmphasizer = $this->get('search.term_emphasizer');
+        // Splits the query into terms and removes all terms which
+        // length is less than 2
+        $terms = array_unique(explode(' ', strtolower($query)));
+        array_filter($terms, function($term) {
+            return strlen($term) >= 2;
+        });
 
-        $terms = $termSplitter->splitIntoTerms($query);
         $posts = new ArrayCollection();
 
         if (!empty($terms)) {
@@ -144,9 +147,14 @@ class BlogController extends Controller
         if ($request->isXmlHttpRequest()) {
             $results = array();
 
+            $patterns = array_map(function($term) {
+                return sprintf('/%s/i', $term);
+            }, $terms);
+
             foreach ($posts as $post) {
                 array_push($results, array(
-                    'result' => $termEmphasizer->emphasizeTerms($post->getTitle(), $terms),
+                    // Emphasizes terms in the post's title
+                    'result' => preg_replace($patterns, '<em>${0}</em>', $post->getTitle()),
                     'url' => $this->generateUrl('blog_post', array('slug' => $post->getSlug())),
                 ));
             }
@@ -157,7 +165,6 @@ class BlogController extends Controller
         return $this->render('blog/search.html.twig', array(
             'posts' => $posts,
             'terms' => $terms,
-            'emphasizer' => $termEmphasizer,
         ));
     }
 }
