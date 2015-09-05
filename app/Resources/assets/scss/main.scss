@@ -63,6 +63,28 @@ header {
     .locales a {
         padding-right: 10px;
     }
+
+    // Search bar
+    .search-bar {
+        padding: 0.8em 0;
+
+        form {
+            position: relative;
+        }
+
+        .search-preview {
+            position: absolute;
+            width: 100%;
+            top: 100%;
+        }
+
+        .search-preview em {
+            font-weight: bold;
+            font-style: normal;
+            color: #066699;
+        }
+    }
+
 }
 
 // Body contents
@@ -254,37 +276,6 @@ body#blog_post_show {
                 display: block;
             }
         }
-    }
-}
-
-//
-// Page: 'blog_search'
-// --------------------------------------------------
-body#blog_search {
-    .search-form {
-        margin-bottom: 1em;
-    }
-
-    .search-form form {
-        position: relative;
-    }
-
-    .search-preview {
-        position: absolute;
-        width: 100%;
-        top: 100%;
-    }
-
-    .search-preview em {
-        font-weight: bold;
-        font-style: normal;
-        color: #066699;
-    }
-
-    .search-results .post a em {
-        font-weight: bold;
-        font-style: normal;
-        color: #006699;
     }
 }
 

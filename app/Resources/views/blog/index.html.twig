@@ -3,11 +3,6 @@
 {% block body_id 'blog_index' %}
 
 {% block main %}
-
-    <div class="well">
-        <a href="{{ path('blog_search') }}">{{ 'post.go_to_search_page'|trans }}</a>
-    </div>
-
     {% for post in posts %}
         <article class="post">
             <h2>

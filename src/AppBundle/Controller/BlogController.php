@@ -121,7 +121,7 @@ class BlogController extends Controller
      * @Route("/search", name="blog_search")
      * @Method("GET")
      *
-     * @return Response|JsonResponse
+     * @return JsonResponse
      */
     public function searchAction(Request $request)
     {
@@ -133,8 +133,8 @@ class BlogController extends Controller
         // Splits the query into terms and removes all terms which
         // length is less than 2
         $terms = array_unique(explode(' ', strtolower($query)));
-        array_filter($terms, function($term) {
-            return strlen($term) >= 2;
+        $terms = array_filter($terms, function($term) {
+            return 2 <= strlen($term);
         });
 
         $posts = new ArrayCollection();
@@ -144,27 +144,15 @@ class BlogController extends Controller
             $posts = $em->getRepository('AppBundle:Post')->findByTerms($terms);
         }
 
-        if ($request->isXmlHttpRequest()) {
-            $results = array();
+        $results = array();
 
-            $patterns = array_map(function($term) {
-                return sprintf('/%s/i', $term);
-            }, $terms);
-
-            foreach ($posts as $post) {
-                array_push($results, array(
-                    // Emphasizes terms in the post's title
-                    'result' => preg_replace($patterns, '<em>${0}</em>', $post->getTitle()),
-                    'url' => $this->generateUrl('blog_post', array('slug' => $post->getSlug())),
-                ));
-            }
-
-            return new JsonResponse($results);
+        foreach ($posts as $post) {
+            array_push($results, array(
+                'result' => $post->getTitle(),
+                'url' => $this->generateUrl('blog_post', array('slug' => $post->getSlug())),
+            ));
         }
 
-        return $this->render('blog/search.html.twig', array(
-            'posts' => $posts,
-            'terms' => $terms,
-        ));
+        return new JsonResponse($results);
     }
 }
