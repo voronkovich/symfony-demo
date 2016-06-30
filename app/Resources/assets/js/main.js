@@ -9,7 +9,12 @@
 
 (function ($) {
     $(document).ready(function () {
-        hljs.initHighlightingOnLoad();
+        hljs.initHighlighting();
+
+        // Making links to the documentation clickable in the modal window.
+        $('#sourceCodeModal code').each(function() {
+            $(this).html($(this).html().replace(/(?:(https?\:\/\/symfony.com\/doc\/[^\s()<>]+))/m, '<a href="$1" target="_blank">$1</a>'));
+        });
 
         // Datetime picker initialization.
         // See http://eonasdan.github.io/bootstrap-datetimepicker/
