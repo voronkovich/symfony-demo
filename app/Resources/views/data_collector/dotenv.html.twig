@@ -1,0 +1,35 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block menu %}
+    <span class="label {{ collector.envs is empty ? 'disabled': '' }}">
+        <span class="icon">{{ include('@WebProfiler/Icon/request.svg') }}</span>
+        <strong>Dotenv</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Loaded environment variables</h2>
+
+    {% if collector.envs is not empty %}
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col" class="key">Key</th>
+                    <th scope="col">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for key,value in collector.envs %}
+                <tr>
+                    <td>{{ key }}</td>
+                    <td>{{ value }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+    <div class="empty">
+        <p>No environment variables were loaded.</p>
+    </div>
+    {% endif %}
+{% endblock %}
