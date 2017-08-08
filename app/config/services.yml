@@ -56,4 +56,4 @@ services:
         tags:
             - name: data_collector
               template: 'data_collector/dotenv.html.twig'
-              id: 'app.dotenv_collector'
+              id: 'dotenv'

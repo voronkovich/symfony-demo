@@ -33,6 +33,6 @@ class DotenvDataCollector extends DataCollector
 
     public function getName()
     {
-        return 'app.dotenv_collector';
+        return 'dotenv';
     }
 }
