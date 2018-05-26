@@ -16,6 +16,7 @@ use App\Entity\Post;
 use App\Events;
 use App\Form\CommentType;
 use App\Repository\PostRepository;
+use App\TagCloud;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -165,5 +166,10 @@ class BlogController extends AbstractController
         }
 
         return $this->json($results);
+    }
+
+    public function tagCloud(TagCloud $tagCloud): Response
+    {
+        return $this->render('blog/tag_cloud.html.twig', ['tags' => $tagCloud->generateTagCloud(10)]);
     }
 }

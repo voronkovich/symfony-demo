@@ -14,6 +14,7 @@ namespace App\Repository;
 use App\Entity\Tag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 /**
  * This custom Doctrine repository is empty because so far we don't need any custom
@@ -29,5 +30,30 @@ class TagRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Tag::class);
+    }
+
+    public function findMostPopular(int $limit = 10): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $sql = '
+            SELECT t.*, COUNT(pt.post_id) count
+            FROM symfony_demo_tag t
+            LEFT JOIN symfony_demo_post_tag pt ON pt.tag_id = t.id
+            GROUP BY t.id
+            ORDER BY count DESC, t.name ASC
+            LIMIT ?
+        ';
+
+        $rsm = new ResultSetMappingBuilder($entityManager);
+        $rsm->addRootEntityFromClassMetadata(Tag::class, 't');
+        $rsm->addScalarResult('count', 'count', 'integer');
+
+        $query = $entityManager
+            ->createNativeQuery($sql, $rsm)
+            ->setParameter(1, $limit)
+        ;
+
+        return $query->getResult();
     }
 }

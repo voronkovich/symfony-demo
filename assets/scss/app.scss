@@ -258,6 +258,15 @@ body#blog_index .post-tags .label-default i {
   color: #a3b2b2;
 }
 
+body#blog_index .tag-cloud {
+    margin: 0 0 1em 0;
+    text-align: center;
+}
+
+body#blog_index .tag-cloud .tags {
+    color: #6d8283;
+}
+
 /* Page: 'Blog post show'
    ------------------------------------------------------------------------- */
 body#blog_post_show #main h3 {

@@ -34,6 +34,8 @@
 {% block sidebar %}
     {{ parent() }}
 
+    {{ render(controller('App\\Controller\\BlogController::tagCloud')) }}
+
     {{ show_source_code(_self) }}
     {{ include('blog/_rss.html.twig') }}
 {% endblock %}
