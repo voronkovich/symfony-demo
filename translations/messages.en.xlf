@@ -100,6 +100,10 @@
                 <source>title.change_password</source>
                 <target>Change password</target>
             </trans-unit>
+            <trans-unit id="title.registration">
+                <source>title.registration</source>
+                <target>Registration</target>
+            </trans-unit>
 
             <trans-unit id="action.show">
                 <source>action.show</source>
@@ -168,6 +172,10 @@
             <trans-unit id="action.sign_in">
                 <source>action.sign_in</source>
                 <target>Sign in</target>
+            </trans-unit>
+            <trans-unit id="action.sign_up">
+                <source>action.sign_up</source>
+                <target>Sign up</target>
             </trans-unit>
             <trans-unit id="action.browse_app">
                 <source>action.browse_app</source>
@@ -345,6 +353,11 @@
                 <source>user.updated_successfully</source>
                 <target>User updated successfully!</target>
             </trans-unit>
+            <trans-unit id="registration.success">
+                <source>user.registered_successfully</source>
+                <target>User "%username%" with a password "%password%" has been registered successfully!</target>
+            </trans-unit>
+
 
             <trans-unit id="notification.comment_created">
                 <source>notification.comment_created</source>
