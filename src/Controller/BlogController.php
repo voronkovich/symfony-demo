@@ -23,6 +23,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -146,14 +147,10 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/search", methods={"GET"}, name="blog_search")
+     * @Route("/search", methods={"GET"}, condition="request.isXmlHttpRequest()", name="blog_search")
      */
-    public function search(Request $request, PostRepository $posts): Response
+    public function search(Request $request, PostRepository $posts): JsonResponse
     {
-        if (!$request->isXmlHttpRequest()) {
-            return $this->render('blog/search.html.twig');
-        }
-
         $query = $request->query->get('q', '');
         $limit = $request->query->get('l', 10);
         $foundPosts = $posts->findBySearchQuery($query, $limit);
@@ -170,5 +167,13 @@ class BlogController extends AbstractController
         }
 
         return $this->json($results);
+    }
+
+    /**
+     * @Route("/search", methods={"GET"}, name="blog_search_show")
+     */
+    public function searchShow(): Response
+    {
+        return $this->render('blog/search.html.twig');
     }
 }
