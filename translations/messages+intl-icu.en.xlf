@@ -190,6 +190,10 @@
                 <source>label.title</source>
                 <target>Title</target>
             </trans-unit>
+            <trans-unit id="label.slug">
+                <source>label.slug</source>
+                <target>Slug</target>
+            </trans-unit>
             <trans-unit id="label.author">
                 <source>label.author</source>
                 <target>Author</target>
@@ -394,6 +398,10 @@
             <trans-unit id="help.more_information">
                 <source>help.more_information</source>
                 <target><![CDATA[For more information, check out the <a href="https://symfony.com/doc">Symfony doc</a>.]]></target>
+            </trans-unit>
+            <trans-unit id="help.post_slug">
+                <source>help.post_slug</source>
+                <target>If you left this field blank, the slug will be generated automatically, based on the post title.</target>
             </trans-unit>
             <trans-unit id="help.post_summary">
                 <source>help.post_summary</source>

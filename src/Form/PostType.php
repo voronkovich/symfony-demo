@@ -58,6 +58,11 @@ class PostType extends AbstractType
                 'attr' => ['autofocus' => true],
                 'label' => 'label.title',
             ])
+            ->add('slug', null, [
+                'label' => 'label.slug',
+                'help' => 'help.post_slug',
+                'required' => false,
+            ])
             ->add('summary', TextareaType::class, [
                 'help' => 'help.post_summary',
                 'label' => 'label.summary',
@@ -81,6 +86,11 @@ class PostType extends AbstractType
             ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
                 /** @var Post */
                 $post = $event->getData();
+
+                if (null !== $post->getSlug()) {
+                    return;
+                }
+
                 if (null !== $postTitle = $post->getTitle()) {
                     $post->setSlug($this->slugger->slug($postTitle)->lower());
                 }
